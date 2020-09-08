@@ -29,7 +29,7 @@ table.innerHTML = `
       <td>${challenge}</td>
       <td>
         <ul class="list-group">
-        <li class="list-group-item list-group-item-warning">${goals.join("")}</li>
+        <li class="list-group-item list-group-item-warning">${goals.join(", ")}</li>
         </ul>
       </td>
       </tr>
