@@ -9,12 +9,8 @@ title.setAttribute("class", "title");
 let table = document.createElement("table");
 table.setAttribute("class", "table table-responsive");
 
-//handle data
-
-//map over
-
 table.innerHTML = `
-  <thead>
+  <thead class="thead-light">
     <tr>
       <th scope="col">Week</th>
       <th scope="col">Day</th>
@@ -24,17 +20,16 @@ table.innerHTML = `
     </tr>
   </thead>
   <tbody>
-  ${console.log("hey")}
   ${schedule.map((week) => {
     const { challenge, day, goals, unit, week: weekNumber } = week;
     return `<tr>
       <th scope="row">${weekNumber}</th>
-      <td scope="col">${day}</td>
-      <td scope="col">${unit}</td>
-      <td scope="col">${challenge}</td>
-      <td scope="col">
-        <ul class="list-group ">
-        ${goals.map((goal) => `<li class="list-group-item list-group-item-warning">${goal}</li>`)}
+      <td>${day}</td>
+      <td>${unit}</td>
+      <td>${challenge}</td>
+      <td>
+        <ul class="list-group">
+        <li class="list-group-item list-group-item-warning">${goals.join("")}</li>
         </ul>
       </td>
       </tr>
@@ -45,24 +40,3 @@ table.innerHTML = `
 document.body.appendChild(table);
 // Your schedule can be accessed through the global object "schedule"
 console.log(schedule);
-
-/*
-<tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-*/
