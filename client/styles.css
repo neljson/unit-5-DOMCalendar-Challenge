@@ -1,0 +1,13 @@
+body {
+  padding-top: 2rem;
+}
+table {
+  outline: red 1px solid;
+  max-width: 80%;
+}
+
+.title {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: 2rem;
+}
