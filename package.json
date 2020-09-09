@@ -12,5 +12,8 @@
     "bootstrap": "4.5.2",
     "express": "^4.12.3",
     "jquery": "^2.1.4"
+  },
+  "devDependencies": {
+    "live-server": "1.2.1"
   }
 }
