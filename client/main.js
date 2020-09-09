@@ -39,42 +39,43 @@ $(document).on("ready", () => {
   $("body").append(title);
   console.log(title);
 
-  //declare a variable to store our table row
-  let tableRow;
-
-  // Make an AJAX request to the server, then do something with the result!
-
-  let newObj;
-
-  fetch("http://slack-server-production.us-west-2.elasticbeanstalk.com/calendar/NY/21").then((data) =>
-    data.json().then((data) => (newObj = data))
-  );
-
-  console.log("DATA:", newObj);
-
   //build the table
   let table = document.createElement("table");
   table.setAttribute("class", "table table-responsive");
-
   table.innerHTML = `
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">Week</th>
-      <th scope="col">Day</th>
-      <th scope="col">Unit</th>
-      <th scope="col">Challenge</th>
-      <th scope="col">Goals</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">weeknumber</th>
-      <td>
-      </td>
-    </tr>
-  </tbody>`;
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Week</th>
+        <th scope="col">Day</th>
+        <th scope="col">Unit</th>
+        <th scope="col">Challenge</th>
+        <th scope="col">Goals</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th id="weeknumber" scope="row">weeknumber</th>
+        <td>
+        </td>
+      </tr>
+    </tbody>
+  `;
 
   document.body.appendChild(table);
+
+  fetch("http://slack-server-production.us-west-2.elasticbeanstalk.com/calendar/NY/21").then((data) =>
+    data.json().then((data) => {
+      //select the th
+      const table = document.querySelector(table);
+      const dataArray = Object.entries(data);
+      dataArray.map((el) => {
+        const prettyDay = el[0];
+        const events = el[1];
+        console.log(events);
+        console.log(prettyDay);
+      });
+    })
+  );
 });
 
 //re-assign the value of our tableRow variable to the created Element
