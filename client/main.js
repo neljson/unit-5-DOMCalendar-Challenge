@@ -1,8 +1,3 @@
-// The following code appends a title to the page
-// document.createElement creates an element that can be altered and then inserted into the DOM
-
-// document.body.appendChild places a node as a child under the body element
-
 const data = {
   "Aug 31 2020": [
     {
@@ -611,6 +606,13 @@ const data = {
   ],
 };
 
+// get the events
+const entries = Object.entries(data).map((data) => data[1]);
+const days = entries.map((entry) => entry);
+const day = days.map((day) => day);
+
+console.log("DAYS", days);
+
 var title = document.createElement("div");
 title.innerHTML = "James HELLO - Codesmith Calendar";
 document.body.appendChild(title);
@@ -618,10 +620,6 @@ title.setAttribute("class", "title");
 
 let table = document.createElement("table");
 table.setAttribute("class", "table table-responsive");
-
-const keys = Object.keys(data);
-
-dataArray = Object.entries(data);
 
 table.innerHTML = `
   <thead class="thead-light">
@@ -633,19 +631,15 @@ table.innerHTML = `
       <th scope="col">Goals</th>
     </tr>
   </thead>
-  ${dataArray.map((entry) => {
-    return `<tr>
-      <th scope="row">${entry[0]}</th>
-      <td>${entry[0].kind}</td>
-      <td>
-        <ul class="list-group">
-        </ul>
-      </td>
-      </tr>
-      `;
-  })}
+  <tbody>
+    ${day.map((day) => {
+      console.log(day[0]);
+      return `<tr>
+        <th scope="row>First</th>
+        <td>HEY</td>
+      </tr>`;
+    })}
   </tbody>`;
 
 document.body.appendChild(table);
 // Your schedule can be accessed through the global object "schedule"
-console.log(schedule);
