@@ -45,19 +45,13 @@ $(document).on("ready", () => {
   table.innerHTML = `
     <thead class="thead-light">
       <tr>
-        <th scope="col">Week</th>
         <th scope="col">Day</th>
-        <th scope="col">Unit</th>
-        <th scope="col">Challenge</th>
+        <th scope="col">Summary</th>
+        <th scope="col">Link</th>
         <th scope="col">Goals</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <th id="weeknumber" scope="row">weeknumber</th>
-        <td>
-        </td>
-      </tr>
+    <tbody id="tableBody">
     </tbody>
   `;
 
@@ -66,13 +60,35 @@ $(document).on("ready", () => {
   fetch("http://slack-server-production.us-west-2.elasticbeanstalk.com/calendar/NY/21").then((data) =>
     data.json().then((data) => {
       //select the th
-      const table = document.querySelector(table);
+      const tableBody = document.querySelector("#tableBody");
       const dataArray = Object.entries(data);
       dataArray.map((el) => {
-        const prettyDay = el[0];
+        const days = el[0]; // array of days
         const events = el[1];
-        console.log(events);
-        console.log(prettyDay);
+
+        console.log("DAYS", days);
+        console.log("EVENTDATA", events);
+        // console.log("DAY", day);
+
+        //create a new row
+        const tableRow = document.createElement("tr");
+
+        //create a td tag
+        const tableData = document.createElement("td");
+
+        //update html of the row
+        tableRow.innerHTML = `
+        <th scope="row">${days}</th>`;
+
+        events.map((event) => {
+          tableData.innerHTML = `
+          <td id="${event.id}">${event.summary}</td>
+          <td id="link"><a target="_blank" href=${event.htmlLink}>Link</a></td>
+          `;
+        });
+
+        //append the new row to the table body
+        tableBody.appendChild(tableRow).appendChild(tableData);
       });
     })
   );
