@@ -1,15 +1,21 @@
 <html>
   <head>
     <meta charset="UTF-8" />
+<<<<<<< HEAD
     <title>James Scaggs - Codesmith Calendar</title>
     <script src="lib/jquery/dist/jquery.js"></script>
     <script src="test/schedule.js"></script>
+=======
+    <title>Calendar</title>
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+>>>>>>> unit-5
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
       crossorigin="anonymous"
     />
+<<<<<<< HEAD
     <link rel="stylesheet" href="./client/styles.css" />
   </head>
   <body class="container"></body>
@@ -38,6 +44,29 @@
       addScript("./test/calendar-test.js");
     }
 
+=======
+  </head>
+  <body>
+    <div class="container">
+      <h2>Test</h2>
+    </div>
+  </body>
+  <script src="./node_modules/expect/umd/expect.min.js"></script>
+  <script src="./node_modules/mocha/mocha.js"></script>
+  <script src="./test/polyfill.js"></script>
+  <script src="./client/main.js"></script>
+
+  <script>
+    // If called from Mocha Phantom-JS on the command line then add the test scripts
+    // to the end of the document.
+    if (window.callPhantom) {
+      mocha.setup("bdd");
+      addScript("./test/online-calendar-test.js");
+      addScript("./test/online-chatroom-test.js");
+      addScript("./test/runMocha.js");
+    }
+
+>>>>>>> unit-5
     function addScript(path) {
       var js = document.createElement("script");
       js.type = "text/javascript";
