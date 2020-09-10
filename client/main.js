@@ -2,7 +2,6 @@ class Calendar {
   //do something with the data here
   constructor(schedule) {}
 }
-
 class Event {
   constructor(data) {
     this.startTime = data.startTime;
@@ -10,7 +9,6 @@ class Event {
     this.description = data.description;
   }
 }
-
 class Day {
   constructor(name) {
     this.name = name;
@@ -23,7 +21,6 @@ class Day {
     };
   }
 }
-
 class Week {
   constructor(number) {
     this.days = [];
@@ -33,12 +30,10 @@ class Week {
     };
   }
 }
-
 $(document).on("ready", () => {
   const title = $("<h1>").text("Social Calendar");
   $("body").append(title);
   console.log(title);
-
   //build the table
   let table = document.createElement("table");
   table.setAttribute("class", "table table-responsive");
@@ -46,17 +41,14 @@ $(document).on("ready", () => {
     <thead class="thead-light">
       <tr>
         <th scope="col">Day</th>
-        <th scope="col">Summary</th>
-        <th scope="col">Link</th>
-        <th scope="col">Goals</th>
+        <th scope="col">Events</th>
+        <th scope="col">Zoom Room</th>
       </tr>
     </thead>
     <tbody id="tableBody">
     </tbody>
   `;
-
   document.body.appendChild(table);
-
   fetch("http://slack-server-production.us-west-2.elasticbeanstalk.com/calendar/NY/21").then((data) =>
     data.json().then((data) => {
       //select the th
@@ -65,33 +57,49 @@ $(document).on("ready", () => {
       dataArray.map((el) => {
         const days = el[0]; // array of days
         const events = el[1];
-
-        console.log("DAYS", days);
-        console.log("EVENTDATA", events);
-        // console.log("DAY", day);
-
-        //create a new row
-        const tableRow = document.createElement("tr");
-
-        //create a td tag
-        const tableData = document.createElement("td");
-
-        //update html of the row
-        tableRow.innerHTML = `
-        <th scope="row">${days}</th>`;
-
+        // console.log("DAYS:", days);
+        // console.log("EVENTDATA:", events);
+        // console.log("zoom:", zoomLinks);
+        // console.log(el);
         events.map((event) => {
-          tableData.innerHTML = `
-          <td id="${event.id}">${event.summary}</td>
-          <td id="link"><a target="_blank" href=${event.htmlLink}>Link</a></td>
-          `;
+          console.log(event);
+          //create our elements
+          const tableRow = document.createElement("tr");
+          const rowHeader = document.createElement("th");
+          // helpers to handle date formatting
+          let date = new Date(event.start.dateTime);
+          date = date.toDateString();
+          //set attribute let's us give each row a unique id that corresponds with the event that day
+          // good practice like in React, creating multiple elements, unique id element will be useful to identify
+          // the right row
+          tableRow.setAttribute("id", event.id);
+          rowHeader.innerText = date;
+          rowHeader.setAttribute("scope", "row");
+          //appending
+          tableBody.appendChild(tableRow); //tr
+          //populating row with summary  (our events descriptions)
+          tableRow.appendChild(rowHeader); //th
+          //Zoom room link
+          //iterate over the keys in our event object, create a new td tag for each
+          // property ("location") we want to render.
+          // for (let key in event) {
+          //   //create two td tags
+          //   //summary
+          //   if (key === "summary") {
+          //     const summary = document.createElement("td");
+          //     summary.innerText = event.summary;
+          //     tableRow.appendChild(summary);
+          //   }
+          //   //zoom link
+          //   else if (key === "location") {
+          //     const location =  document.createElement("td");
+          //     location.innerText = event.location;
+          //     tableRow.appendChild(location);
+          //   }
+          // }
         });
-
-        //append the new row to the table body
-        tableBody.appendChild(tableRow).appendChild(tableData);
       });
     })
   );
 });
-
 //re-assign the value of our tableRow variable to the created Element
