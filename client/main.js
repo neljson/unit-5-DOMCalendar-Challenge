@@ -43,7 +43,7 @@ $(document).on("ready", () => {
     <thead class="thead-light">
       <tr>
         <th scope="col">Day</th>
-        <th scope="col">Events</th>
+        <th scope="col">Event</th>
         <th scope="col">Zoom Room</th>
       </tr>
     </thead>
@@ -52,10 +52,11 @@ $(document).on("ready", () => {
   `;
   document.body.appendChild(table);
 
+  //fetch data
   fetch("http://slack-server-production.us-west-2.elasticbeanstalk.com/calendar/NY/21").then((data) =>
     data.json().then((data) => {
-      //select the th
       const tableBody = document.querySelector("#tableBody");
+
       const dataArray = Object.entries(data);
 
       dataArray.map((el) => {
@@ -64,37 +65,40 @@ $(document).on("ready", () => {
         events.map((event) => {
           console.log({ event });
 
-          //create our elements
+          //create table rows
           const tableRow = document.createElement("tr");
           const rowHeader = document.createElement("th");
-
-          // helpers to handle date formatting
-          let date = new Date(event.start.dateTime);
-          date = date.toDateString();
 
           //set attributes
           tableRow.setAttribute("id", event.id);
           rowHeader.setAttribute("scope", "row");
 
-          //building content
-          rowHeader.innerText = date;
+          // helpers to handle date formatting
+          let date = new Date(event.start.dateTime);
+          const day = date.toDateString();
+          const time = date.toLocaleString().split(",")[1];
 
-          //appending
+          //set the content
+          rowHeader.innerHTML = `
+            ${day} @ ${time}
+          `;
+
+          //insert to DOM
           tableBody.appendChild(tableRow); //tr
           tableRow.appendChild(rowHeader); //th
 
-          //iterate over the keys in our event object, create a new td tag for each
-          // property ("location") we want to render.
+          //iterate over properties and build td tags
           for (let key in event) {
-            //summary
             if (key === "summary") {
               const summary = document.createElement("td");
+              summary.setAttribute("class", "summary");
               summary.innerText = event.summary;
               tableRow.appendChild(summary);
             } else if (key === "location") {
               const location = document.createElement("td");
+              location.setAttribute("class", "location");
               location.innerHTML = `
-                <a href=${event.location}>${event.location}</a>
+              <a href=${event.location}>${event.location}</a>
               `;
               tableRow.appendChild(location);
             }
@@ -104,4 +108,3 @@ $(document).on("ready", () => {
     })
   );
 });
-//re-assign the value of our tableRow variable to the created Element
