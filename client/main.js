@@ -30,10 +30,12 @@ class Week {
     };
   }
 }
+
 $(document).on("ready", () => {
   const title = $("<h1>").text("Social Calendar");
   $("body").append(title);
   console.log(title);
+
   //build the table
   let table = document.createElement("table");
   table.setAttribute("class", "table table-responsive");
@@ -49,54 +51,54 @@ $(document).on("ready", () => {
     </tbody>
   `;
   document.body.appendChild(table);
+
   fetch("http://slack-server-production.us-west-2.elasticbeanstalk.com/calendar/NY/21").then((data) =>
     data.json().then((data) => {
       //select the th
       const tableBody = document.querySelector("#tableBody");
       const dataArray = Object.entries(data);
+
       dataArray.map((el) => {
-        const days = el[0]; // array of days
         const events = el[1];
-        // console.log("DAYS:", days);
-        // console.log("EVENTDATA:", events);
-        // console.log("zoom:", zoomLinks);
-        // console.log(el);
+
         events.map((event) => {
-          console.log(event);
+          console.log({ event });
+
           //create our elements
           const tableRow = document.createElement("tr");
           const rowHeader = document.createElement("th");
+
           // helpers to handle date formatting
           let date = new Date(event.start.dateTime);
           date = date.toDateString();
-          //set attribute let's us give each row a unique id that corresponds with the event that day
-          // good practice like in React, creating multiple elements, unique id element will be useful to identify
-          // the right row
+
+          //set attributes
           tableRow.setAttribute("id", event.id);
-          rowHeader.innerText = date;
           rowHeader.setAttribute("scope", "row");
+
+          //building content
+          rowHeader.innerText = date;
+
           //appending
           tableBody.appendChild(tableRow); //tr
-          //populating row with summary  (our events descriptions)
           tableRow.appendChild(rowHeader); //th
-          //Zoom room link
+
           //iterate over the keys in our event object, create a new td tag for each
           // property ("location") we want to render.
-          // for (let key in event) {
-          //   //create two td tags
-          //   //summary
-          //   if (key === "summary") {
-          //     const summary = document.createElement("td");
-          //     summary.innerText = event.summary;
-          //     tableRow.appendChild(summary);
-          //   }
-          //   //zoom link
-          //   else if (key === "location") {
-          //     const location =  document.createElement("td");
-          //     location.innerText = event.location;
-          //     tableRow.appendChild(location);
-          //   }
-          // }
+          for (let key in event) {
+            //summary
+            if (key === "summary") {
+              const summary = document.createElement("td");
+              summary.innerText = event.summary;
+              tableRow.appendChild(summary);
+            } else if (key === "location") {
+              const location = document.createElement("td");
+              location.innerHTML = `
+                <a href=${event.location}>${event.location}</a>
+              `;
+              tableRow.appendChild(location);
+            }
+          }
         });
       });
     })
